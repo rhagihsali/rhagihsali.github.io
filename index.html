@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>RHAGIH'S CABINET</title>
+  <style>
+    body { text-align: center; font-family: Arial; margin-top: 100px; background: #f0f0f0; }
+    .box { background: white; padding: 30px; width: 300px; margin: auto; border-radius: 10px; box-shadow: 0 0 10px gray; }
+    input { padding: 10px; width: 80%; margin: 10px 0; }
+    button { padding: 10px 20px; background: green; color: white; border: none; border-radius: 5px; }
+  </style>
+</head>
+<body>
+  <div class="box">
+    <h2>🔐 RHAGIH'S CABINET</h2>
+    <p>Enter Password:</p>
+    <input type="password" id="pass" placeholder="Type password here">
+    <br>
+    <button onclick="check()">OPEN</button>
+    <p id="msg" style="color:red;"></p>
+  </div>
+
+  <script>
+    function check() {
+      var p = document.getElementById("pass").value;
+      if(p == "Rhagihsali@13") {
+        document.body.innerHTML = "<h1>Welcome RHAGIH!</h1><p>Andito na yung cabinet mo 🎉</p>";
+      } else {
+        document.getElementById("msg").innerText = "Mali password!";
+      }
+    }
+  </script>
+</body>
+</html>
