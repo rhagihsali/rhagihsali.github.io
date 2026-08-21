@@ -1,33 +1,90 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>RHAGIH'S CABINET</title>
-  <style>
-    body { text-align: center; font-family: Arial; margin-top: 100px; background: #f0f0f0; }
-    .box { background: white; padding: 30px; width: 300px; margin: auto; border-radius: 10px; box-shadow: 0 0 10px gray; }
-    input { padding: 10px; width: 80%; margin: 10px 0; }
-    button { padding: 10px 20px; background: green; color: white; border: none; border-radius: 5px; }
-  </style>
+    <title>RHAGIH'S CABINET</title>
+    <style>
+        body { 
+            font-family: Arial; 
+            text-align: center; 
+            background: pink;
+            padding: 20px;
+        }
+        #login, #content { 
+            background: white; 
+            padding: 20px; 
+            border-radius: 10px; 
+            max-width: 800px;
+            margin: auto;
+        }
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin: 20px 0;
+        }
+        .gallery img { 
+            width: 100%; 
+            border-radius: 10px; 
+        }
+        .quote { 
+            font-style: italic; 
+            color: purple; 
+            margin: 10px 0; 
+        }
+        .btn { 
+            background: blue; 
+            color: white; 
+            padding: 10px 20px; 
+            text-decoration: none; 
+            border-radius: 5px; 
+            display: inline-block; 
+        }
+    </style>
 </head>
 <body>
-  <div class="box">
-    <h2>🔐 RHAGIH'S CABINET</h2>
-    <p>Enter Password:</p>
-    <input type="password" id="pass" placeholder="Type password here">
-    <br>
-    <button onclick="check()">OPEN</button>
-    <p id="msg" style="color:red;"></p>
-  </div>
 
-  <script>
-    function check() {
-      var p = document.getElementById("pass").value;
-      if(p == "Rhagihsali@13") {
-        document.body.innerHTML = "<h1>Welcome RHAGIH!</h1><p>Andito na yung cabinet mo 🎉</p>";
-      } else {
-        document.getElementById("msg").innerText = "Mali password!";
-      }
+<div id="login">
+    <h2>RHAGIH'S CABINET 🔒</h2>
+    <input type="password" id="pass" placeholder="Enter Password">
+    <button onclick="check()">OPEN</button>
+</div>
+
+<div id="content" style="display:none;">
+    <h2>Welcome RHAGIH! 🎉</h2>
+
+    <h3>📸 MY PHOTO GALLERY - 10 PICTURES</h3>
+    <div class="gallery">
+        <img src="pic1.jpg" alt="Pic 1">
+        <img src="pic2.jpg" alt="Pic 2">
+        <img src="pic3.jpg" alt="Pic 3">
+        <img src="pic4.jpg" alt="Pic 4">
+        <img src="pic5.jpg" alt="Pic 5">
+        <img src="pic6.jpg" alt="Pic 6">
+        <img src="pic7.jpg" alt="Pic 7">
+        <img src="pic8.jpg" alt="Pic 8">
+        <img src="pic9.jpg" alt="Pic 9">
+        <img src="pic10.jpg" alt="Pic 10">
+    </div>
+
+    <h3>💜 QUOTES FOR ME</h3>
+    <p class="quote">"Alhamdulillah for everything"</p>
+    <p class="quote">"MOHAMMADSALI - Laban lang"</p>
+
+    <h3>📱 MY FB</h3>
+    <a href="https://facebook.com" class="btn">Punta sa FB ko</a>
+
+</div>
+
+<script>
+function check() {
+    if(document.getElementById('pass').value === 'Rhagihsali@13') {
+        document.getElementById('login').style.display = 'none';
+        document.getElementById('content').style.display = 'block';
+    } else {
+        alert('Mali password!');
     }
-  </script>
+}
+</script>
+
 </body>
 </html>
