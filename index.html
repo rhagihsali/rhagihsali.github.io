@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="tl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ALAALA BOOK - ULTRA SAFE</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;font-family:'Segoe UI',Arial,sans-serif}
+body{background:#fdf6e3;color:#3e2723}
+.header{background:#8B4513;color:#fde8c0;padding:18px 12px;text-align:center;position:sticky;top:0;z-index:25}
+.tabs{display:flex;gap:8px;padding:10px;background:#fdf6e3;overflow-x:auto;position:sticky;top:78px;z-index:15;border-bottom:3px solid #8B4513}
+.tabs button{padding:11px 20px;border:2.5px solid #8B4513;border-radius:28px;background:#fff;font-weight:800;font-size:14px;cursor:pointer;white-space:nowrap}
+.tabs button.active{background:#8B4513;color:#fff}
+.search-wrap{padding:10px 12px;background:#fdf6e3;position:sticky;top:132px;z-index:14}
+.search-bar{display:flex;align-items:center;background:#fff;border-radius:28px;padding:12px 16px;box-shadow:0 2px 10px rgba(0,0,0,0.15);border:2px solid #e8dcc0;gap:12px}
+.search-bar input{flex:1;border:none;outline:none;font-size:16px;background:transparent}
+.container{padding:12px;max-width:700px;margin:0 auto}
+.card{background:#fff;border:3px solid #8B4513;border-radius:22px;padding:20px 18px;margin-bottom:16px}
+.toc-line{display:flex;justify-content:space-between;padding:12px 4px;border-bottom:1.8px dashed #c8b89a;font-size:17px}
+.toc-total{border-top:3px solid #8B4513!important;font-weight:900!important}
+.album-title{font-weight:900;margin:16px 0 8px 0;padding:12px 14px;background:#8B4513;color:#fff;border-radius:12px;display:flex;justify-content:space-between}
+.album-title span.count{background:#fff;color:#8B4513;padding:4px 12px;border-radius:20px;font-size:12px}
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:4px;background:#fff;padding:4px;border-radius:12px;border:2px solid #d7c9a8}
+.item{aspect-ratio:1/1;overflow:hidden;background:#000;position:relative;cursor:pointer;border-radius:8px}
+.item img,.item video{width:100%;height:100%;object-fit:cover}
+.doc-item{aspect-ratio:1/1;background:#fff8e1;border:1px solid #d7c9a8;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:6px;text-align:center;cursor:pointer;border-radius:10px}
+.upload-box{background:#fff;border:2.5px dashed #8B4513;border-radius:16px;padding:14px;margin-bottom:16px}
+.upload-box select,.upload-box input,.upload-box textarea{width:100%;padding:11px;margin:6px 0;border:1.5px solid #8B4513;border-radius:10px;font-size:13px}
+.upload-box button{width:100%;padding:13px;background:#8B4513;color:#fff;border:none;border-radius:12px;font-weight:bold;margin-top:8px;cursor:pointer}
+.empty{grid-column:1/-1;text-align:center;padding:20px;color:#999}
+.modal{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.95);z-index:100;align-items:center;justify-content:center;flex-direction:column}
+.modal.active{display:flex}
+.modal-content{position:relative;width:100%;height:100%;display:flex;align-items:center;justify-content:center;flex-direction:column}
+.modal img.modal-media,.modal video.modal-media{max-width:100%;max-height:75vh;object-fit:contain;border-radius:10px}
+.modal.cap{background:#fff;padding:12px;width:90%;max-width:500px;border-radius:12px;margin-top:12px;text-align:center}
+.nav-btn{position:absolute;top:50%;transform:translateY(-50%);background:rgba(255,255,255,0.9);border:none;width:50px;height:50px;border-radius:50%;font-size:24px;cursor:pointer;z-index:101}
+.nav-left{left:10px}.nav-right{right:10px}
+.modal.btns{display:flex;gap:8px;width:90%;max-width:500px;margin-top:10px}
+.modal.btns button{flex:1;padding:12px;border:none;border-radius:10px;font-weight:bold;cursor:pointer;font-size:12px}
+.btn-down{background:#27ae60;color:#fff}.btn-del{background:#c0392b;color:#fff}.btn-restore{background:#2980b9;color:#fff}.btn-perma{background:#000;color:#fff}.btn-close{background:#fff;color:#333;border:1px solid #ccc!important}
+.menu-overlay{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.5);z-index:50}
+.menu-overlay.active{display:block}
+.menu-drawer{position:fixed;top:0;left:-300px;width:280px;bottom:0;background:#fdf6e3;z-index:60;transition:left 0.3s ease;overflow-y:auto;border-right:4px solid #8B4513}
+.menu-drawer.active{left:0}
+.menu-header{background:#8B4513;color:#fde8c0;padding:20px 16px;text-align:center;position:relative}
+.menu-list{padding:10px}
+.menu-item{display:flex;align-items:center;gap:12px;padding:14px 12px;background:#fff;border:2px solid #e8dcc0;border-radius:14px;margin-bottom:8px;cursor:pointer;font-weight:700;font-size:14px}
+.menu-item b{margin-left:auto;background:#8B4513;color:#fff;padding:3px 10px;border-radius:12px;font-size:12px}
+.menu-footer{padding:12px}.menu-footer button{width:100%;padding:12px;border-radius:12px;font-weight:bold;cursor:pointer;background:#c0392b;color:#fff;border:2px solid #c0392b}
+.pass-overlay{position:fixed;top:0;left:0;right:0;bottom:0;background:#8B4513;z-index:200;display:flex;align-items:center;justify-content:center;padding:20px;overflow-y:auto}
+.pass-overlay.hidden{display:none}
+.pass-box{background:#fff;border-radius:22px;padding:24px 20px;width:100%;max-width:400px;box-shadow:0 10px 30px rgba(0,0,0,0.4);border:3px solid #8B4513;text-align:center}
+.pass-input-wrap{position:relative;display:flex;align-items:center;margin-bottom:12px}
+.pass-input-wrap input{width:100%;padding:14px 48px 14px 14px;border:2.5px solid #8B4513;border-radius:14px;font-size:16px;text-align:center;letter-spacing:2px;outline:none}
+.eye-btn{position:absolute;right:10px;background:#fff;border:none;font-size:20px;cursor:pointer;width:32px;height:32px;border-radius:50%}
+.pass-box button.main-btn{width:100%;padding:14px;background:#8B4513;color:#fff;border:none;border-radius:14px;font-weight:900;font-size:16px;cursor:pointer;margin-bottom:10px}
+.link{color:#8B4513;font-size:13px;font-weight:700;cursor:pointer;text-decoration:underline;display:block;margin:8px 0}
+.error{color:#c0392b;font-size:13px;font-weight:bold;margin-bottom:8px;display:none}
+.error.show{display:block}
+.verify-box{display:none;text-align:left;background:#fff8e1;border:2px solid #8B4513;border-radius:14px;padding:14px;margin-top:12px}
+.verify-box.active{display:block}
+.recovery-box{display:none;background:#e8f5e9;border:2px solid #27ae60;border-radius:14px;padding:14px;margin-top:12px;text-align:left}
+.recovery-box.active{display:block}
+.curr-pass{background:#fff;border:1.5px dashed #27ae60;padding:10px;border-radius:10px;font-weight:900;text-align:center;margin:8px 0;word-break:break-all}
+</style>
+</head>
+<body>
+<div class="pass-overlay" id="passOverlay">
+<div class="pass-box">
+<h1>🔒 ALAALA BOOK</h1>
+<p style="font-size:13px;color:#666;margin-bottom:12px">Enter Password para makapasok</p>
+<div class="error" id="passError">❌ Mali password boss!</div>
+<div class="pass-input-wrap">
+<input type="password" id="passInput" placeholder="••••••••" onkeypress="if(event.key==='Enter') checkPassword()">
+<button class="eye-btn" onclick="toggleEye('passInput', this)">👁️</button>
+</div>
+<button class="main-btn" onclick="checkPassword()">🔓 UNLOCK</button>
+<span class="link" onclick="openVerify()">❓ Forgot Password?</span>
+
+<div class="verify-box" id="verifyBox">
+<h3 style="text-align:center;color:#8B4513;margin-bottom:10px">🔐 Identity Verification</h3>
+<label style="font-size:12px;font-weight:700">Q1: What is the name of the subject where you learn to make apps and websites?</label>
+<input type="text" id="ans1" placeholder="Type your answer..." autocomplete="off" style="width:100%;padding:10px;border:1.5px solid #8B4513;border-radius:10px;margin:5px 0 10px 0">
+<label style="font-size:12px;font-weight:700">Q2: What do you call it when you write instructions for a computer using languages like Python or Java?</label>
+<input type="text" id="ans2" placeholder="Type your answer..." autocomplete="off" style="width:100%;padding:10px;border:1.5px solid #8B4513;border-radius:10px;margin:5px 0 8px 0">
+<div class="error" id="verifyError">❌ Mali sagot boss!</div>
+<button onclick="checkVerify()" style="width:100%;padding:11px;background:#27ae60;color:#fff;border:none;border-radius:10px;font-weight:bold;margin-top:6px;cursor:pointer">✅ Verify Identity</button>
+<button onclick="closeVerify()" style="width:100%;padding:11px;background:#fff;color:#8B4513;border:2px solid #8B4513;border-radius:10px;font-weight:bold;margin-top:6px;cursor:pointer">✖️ Cancel</button>
+</div>
+
+<div class="recovery-box" id="recoveryBox">
+<h3 style="color:#27ae60;text-align:center">✅ Verified!</h3>
+<label style="font-size:12px;font-weight:700">🔑 Current Password:</label>
+<div class="curr-pass" id="currentPassDisplay"></div>
+<hr style="margin:12px 0;border:1px dashed #27ae60">
+<label style="font-size:13px;font-weight:900;color:#8B4513">🔒 GUMAWA NG BAGONG PASSWORD:</label>
+<div class="pass-input-wrap" style="margin-top:8px">
+<input type="password" id="newPass1" placeholder="New password...">
+<button class="eye-btn" onclick="toggleEye('newPass1', this)">👁️</button>
+</div>
+<div class="pass-input-wrap">
+<input type="password" id="newPass2" placeholder="Confirm new...">
+<button class="eye-btn" onclick="toggleEye('newPass2', this)">👁️</button>
+</div>
+<div class="error" id="newPassError">❌ Hindi tugma!</div>
+<button onclick="saveNewPassword()" style="width:100%;padding:12px;background:#8B4513;color:#fff;border:none;border-radius:10px;font-weight:bold;margin-top:6px;cursor:pointer">💾 Save New Password</button>
+<button onclick="useOldPassword()" style="width:100%;padding:12px;background:#27ae60;color:#fff;border:none;border-radius:10px;font-weight:bold;margin-top:6px;cursor:pointer">🔓 Use Old & Enter</button>
+</div>
+</div>
+</div>
+
+<div class="menu-overlay" id="menuOverlay" onclick="closeMenu()"></div>
+<div class="menu-drawer" id="menuDrawer">
+<div class="menu-header"><h2>📖 ALAALA BOOK</h2><small>Ultra Safe</small><button onclick="closeMenu()" style="position:absolute;top:10px;right:10px;background:#fff;color:#8B4513;border:none;width:32px;height:32px;border-radius:50%;font-weight:bold;cursor:pointer">✖️</button></div>
+<div class="menu-list">
+<div class="menu-item" onclick="goMenu('toc')"><span>📑</span> TOC</div>
+<div class="menu-item" onclick="goMenu('photos')"><span>📸</span> Photos <b id="menuPhotos">0</b></div>
+<div class="menu-item" onclick="goMenu('videos')"><span>🎬</span> Videos <b id="menuVideos">0</b></div>
+<div class="menu-item" onclick="goMenu('audios')"><span>🎵</span> Audios <b id="menuAudios">0</b></div>
+<div class="menu-item" onclick="goMenu('sulat')"><span>✍️</span> Sulat <b id="menuSulat">0</b></div>
+<div class="menu-item" onclick="goMenu('docs')"><span>📄</span> Docs <b id="menuDocs">0</b></div>
+<div class="menu-item" onclick="goMenu('trash')" style="border-color:#c0392b"><span>🗑️</span> Trash <b id="menuTrash">0</b></div>
+</div>
+<div class="menu-footer"><button onclick="logout()">🔒 Logout</button></div>
+</div>
+
+<div class="header"><h1>📖 ALAALA BOOK</h1><small>12 Albums | Ultra Safe | Hide Videos</small></div>
+<div class="search-wrap"><div class="search-bar"><span style="font-size:22px;cursor:pointer" onclick="openMenu()">☰</span><input type="text" id="searchInput" placeholder="Search &quot;alaala&quot;" oninput="handleSearch(this.value)"><span style="font-size:22px" onclick="handleSearch(document.getElementById('searchInput').value)">🔍</span></div></div>
+<div class="tabs"><button class="active" onclick="showTab('toc',event)">📑 TOC</button><button onclick="showTab('photos',event)">📸 Photos</button><button onclick="showTab('videos',event)">🎬 Videos</button><button onclick="showTab('audios',event)">🎵 Audios</button><button onclick="showTab('sulat',event)">✍️ Sulat</button><button onclick="showTab('docs',event)">📄 Docs</button><button onclick="showTab('trash',event)" style="border-color:#c0392b">🗑️ Trash</button></div>
+<div class="container">
+<div id="tab-toc"><div class="card"><h2>📑 Table of Contents</h2><div class="toc-line"><span>📸 Photos</span><b id="tocPhotos">0</b></div><div class="toc-line"><span>🎬 Videos</span><b id="tocVideos">0</b></div><div class="toc-line"><span>🎵 Audios</span><b id="tocAudios">0</b></div><div class="toc-line"><span>✍️ Sulat</span><b id="tocSulat">0</b></div><div class="toc-line"><span>📄 Docs</span><b id="tocDocs">0</b></div><div class="toc-line toc-total"><span>TOTAL</span><b id="tocTotal">0</b></div></div></div>
+<div id="tab-photos" style="display:none"><div class="upload-box"><select id="photoAlbum"><option value="1">ALBUM1_family</option><option value="2">ALBUM2_my photos</option><option value="3">ALBUM3_graduation</option><option value="4">ALBUM4_beach&travel</option><option value="5">ALBUM5_imam nasser</option><option value="6">ALBUM6_kaguruhan</option><option value="7">ALBUM7_any kinds</option><option value="8">ALBUM8_extra</option><option value="9">ALBUM9</option><option value="10">ALBUM10</option><option value="11">ALBUM11</option><option value="12">ALBUM12</option></select><input type="file" id="photoFile" accept="image/*" multiple><input type="text" id="photoCaption" placeholder="Caption"><button onclick="savePhoto()">+ Save Photo/s</button></div><div id="photoContainer"></div></div>
+<div id="tab-videos" style="display:none">
+<div class="upload-box">
+<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px"><span style="font-weight:900">🎬 Videos (12 Albums)</span><button onclick="toggleHideVideos()" id="hideVideoBtn" style="padding:6px 12px;background:#8B4513;color:#fff;border:none;border-radius:8px;font-size:11px;width:auto">👁️ Hide Videos</button></div>
+<select id="videoAlbum"><option value="1">ALBUM1_family videos</option><option value="2">ALBUM2_my videos</option><option value="3">ALBUM3_imam nasser videos</option><option value="4">ALBUM4_kaguruhan videos</option><option value="5">ALBUM5_any kinds</option><option value="6">ALBUM6_extra</option><option value="7">ALBUM7</option><option value="8">ALBUM8</option><option value="9">ALBUM9</option><option value="10">ALBUM10</option><option value="11">ALBUM11</option><option value="12">ALBUM12</option></select><input type="file" id="videoFile" accept="video/*"><input type="text" id="videoCaption" placeholder="Caption"><button onclick="saveVideo()">+ Save Video</button>
+</div><div id="videoContainer"></div></div>
+<div id="tab-audios" style="display:none"><div class="upload-box"><select id="audioAlbum"><option value="1">ALBUM1_imam nasser</option><option value="2">ALBUM2_kaguruhan</option><option value="3">ALBUM3_my audios</option><option value="4">ALBUM4_any kinds</option><option value="5">ALBUM5_extra</option></select><input type="file" id="audioFile" accept="audio/*"><input type="text" id="audioCaption" placeholder="Caption"><button onclick="saveAudio()">+ Save Audio</button></div><div id="audioContainer"></div></div>
+<div id="tab-sulat" style="display:none"><div class="upload-box"><select id="sulatChapter"><option value="1">Chapter 1</option><option value="2">Chapter 2</option><option value="3">Chapter 3</option><option value="4">Chapter 4</option><option value="5">Chapter 5</option><option value="6">Chapter 6</option><option value="7">Chapter 7</option><option value="8">Chapter 8</option></select><input type="text" id="sulatTitle" placeholder="Title"><textarea id="sulatContent" rows="4" placeholder="Content..."></textarea><button onclick="saveSulat()">+ Save Sulat</button></div><div id="sulatContainer"></div></div>
+<div id="tab-docs" style="display:none"><div class="upload-box"><select id="docAlbum"><option value="1">ALBUM1</option><option value="2">ALBUM2</option><option value="3">ALBUM3</option><option value="4">ALBUM4</option><option value="5">ALBUM5</option><option value="6">ALBUM6</option><option value="7">ALBUM7</option><option value="8">ALBUM8</option><option value="9">ALBUM9</option><option value="10">ALBUM10</option><option value="11">ALBUM11</option><option value="12">ALBUM12</option></select><input type="file" id="docFile" accept="*/*"><input type="text" id="docCaption" placeholder="Caption"><button onclick="saveDoc()">+ Save Doc</button></div><div id="docContainer"></div></div>
+<div id="tab-trash" style="display:none"><div class="card" style="background:linear-gradient(135deg,#c0392b,#8B4513);color:#fff"><h2 style="color:#fff">🗑️ TRASH</h2></div><div style="display:flex;gap:8px;margin-bottom:10px"><button onclick="restoreAll()" style="flex:1;padding:12px;background:#27ae60;color:#fff;border:none;border-radius:12px;font-weight:bold">♻️ Restore All</button><button onclick="emptyTrash()" style="flex:1;padding:12px;background:#000;color:#fff;border:none;border-radius:12px;font-weight:bold">🗑️ Empty</button></div><div id="trashContainer"></div></div>
+</div>
+<div class="modal" id="modal"><div class="modal-content"><button class="nav-btn nav-left" onclick="navigateModal(-1)">‹</button><button class="nav-btn nav-right" onclick="navigateModal(1)">›</button><img id="modalImg" class="modal-media" style="display:none"><video id="modalVideo" class="modal-media" style="display:none" controls></video><audio id="modalAudio" style="display:none" controls></audio><div id="modalSulat" style="display:none;width:90%;max-width:600px;max-height:70vh;overflow-y:auto;background:#fff;padding:18px;border-radius:14px"></div><div class="cap" id="modalCap"></div><div class="btns" id="modalBtns"><button class="btn-down" onclick="downloadCurrent()">⬇️ Download</button><button class="btn-del" onclick="moveToTrash()">🗑️ Delete</button><button class="btn-close" onclick="closeModal()">✖️ Close</button></div><div class="btns" id="modalTrashBtns" style="display:none"><button class="btn-restore" onclick="restoreCurrent()">♻️ Restore</button><button class="btn-perma" onclick="permaDeleteCurrent()">❌ Permanent</button><button class="btn-close" onclick="closeModal()">✖️ Close</button></div></div></div>
+<script>
+// ULTRA SAFE - HINDI NA MAKIKITA SA SEARCH ANG SAGOT!
+// Default password
+const FIXED_DEFAULT = "Rhagih@200202";
+// OBFUSCATED ANSWERS - hindi makikita pag sinerch mo "programming" sa GitHub!
+function getAns1(){ return String.fromCharCode(112,114,111,103,114,97,109,109,105,110,103); } // programming
+function getAns2(){ return String.fromCharCode(99,111,100,105,110,103); } // coding
+function getCurrentPassword(){ return localStorage.getItem('ALAALA_CUSTOM_PASS') || FIXED_DEFAULT; }
+let videosHidden = localStorage.getItem('HIDE_VIDEOS') === '1';
+
+let DB_NAME='AlaalaDB_TRASH', STORE='files', TRASH_STORE='trash';
+function openDB(){return new Promise((res,rej)=>{let r=indexedDB.open(DB_NAME,4);r.onupgradeneeded=e=>{let db=e.target.result; if(!db.objectStoreNames.contains(STORE)) db.createObjectStore(STORE,{keyPath:'id'}); if(!db.objectStoreNames.contains(TRASH_STORE)) db.createObjectStore(TRASH_STORE,{keyPath:'id'})};r.onsuccess=e=>res(e.target.result);r.onerror=e=>rej(e)})}
+let currentItem=null, currentList=[], currentIndex=0, isTrashView=false;
+let urlCache=new Map(), trashUrlCache=new Map();
+function getUrlFor(item, isTrash=false){ let cache=isTrash?trashUrlCache:urlCache; if(item.blob){ if(!cache.has(item.id)){ cache.set(item.id, URL.createObjectURL(item.blob)); } return cache.get(item.id); } return ''; }
+async function loadAll(){ let idb=await openDB(); let tx=idb.transaction(STORE,'readonly'); return new Promise(res=>{let req=tx.objectStore(STORE).getAll(); req.onsuccess=()=>res(req.result)}); }
+async function loadTrash(){ let idb=await openDB(); let tx=idb.transaction(TRASH_STORE,'readonly'); return new Promise(res=>{let req=tx.objectStore(TRASH_STORE).getAll(); req.onsuccess=()=>res(req.result)}); }
+async function saveToDB(item){ let idb=await openDB(); let tx=idb.transaction(STORE,'readwrite'); tx.objectStore(STORE).put(item); return new Promise((res,rej)=>{tx.oncomplete=()=>res(); tx.onerror=()=>rej(tx.error)}); }
+async function saveToTrash(item){ let idb=await openDB(); let tx=idb.transaction(TRASH_STORE,'readwrite'); tx.objectStore(TRASH_STORE).put(item); return new Promise((res,rej)=>{tx.oncomplete=()=>res(); tx.onerror=()=>rej(tx.error)}); }
+async function deleteFromDB(id){ let idb=await openDB(); let tx=idb.transaction(STORE,'readwrite'); tx.objectStore(STORE).delete(id); if(urlCache.has(id)){URL.revokeObjectURL(urlCache.get(id)); urlCache.delete(id);} return new Promise(res=>{tx.oncomplete=()=>res()}); }
+async function deleteFromTrash(id){ let idb=await openDB(); let tx=idb.transaction(TRASH_STORE,'readwrite'); tx.objectStore(TRASH_STORE).delete(id); if(trashUrlCache.has(id)){URL.revokeObjectURL(trashUrlCache.get(id)); trashUrlCache.delete(id);} return new Promise(res=>{tx.oncomplete=()=>res()}); }
+
+function toggleEye(inputId, btn){ let input=document.getElementById(inputId); if(input.type==="password"){ input.type="text"; btn.textContent="🙈"; } else{ input.type="password"; btn.textContent="👁️"; } }
+function checkPassword(){
+ let input=document.getElementById('passInput').value;
+ if(input===getCurrentPassword()){
+   document.getElementById('passOverlay').classList.add('hidden');
+   document.getElementById('passError').classList.remove('show');
+   document.getElementById('passInput').value='';
+   renderTOC(); updateHideBtn();
+ } else {
+   // LALABAS LANG PAG MALI TALAGA - hindi agad-agad
+   document.getElementById('passError').classList.add('show');
+   document.getElementById('passInput').value='';
+   setTimeout(()=>{ document.getElementById('passError').classList.remove('show'); }, 3000);
+ }
+}
+function openVerify(){ document.getElementById('verifyBox').classList.add('active'); document.getElementById('recoveryBox').classList.remove('active'); document.getElementById('passError').classList.remove('show'); }
+function closeVerify(){ document.getElementById('verifyBox').classList.remove('active'); document.getElementById('recoveryBox').classList.remove('active'); document.getElementById('verifyError').classList.remove('show'); document.getElementById('ans1').value=''; document.getElementById('ans2').value=''; }
+function checkVerify(){
+ let a1=document.getElementById('ans1').value.toLowerCase().trim();
+ let a2=document.getElementById('ans2').value.toLowerCase().trim();
+ // Check gamit obfuscated function - hindi makikita sa search!
+ if(a1===getAns1() && a2===getAns2()){
+   document.getElementById('verifyBox').classList.remove('active');
+   document.getElementById('recoveryBox').classList.add('active');
+   document.getElementById('currentPassDisplay').textContent = getCurrentPassword();
+   document.getElementById('verifyError').classList.remove('show');
+ } else {
+   document.getElementById('verifyError').classList.add('show');
+   setTimeout(()=>{ document.getElementById('verifyError').classList.remove('show'); }, 3000);
+ }
+}
+function saveNewPassword(){
+ let n1=document.getElementById('newPass1').value;
+ let n2=document.getElementById('newPass2').value;
+ if(!n1 || n1.length < 4){ alert("Boss lagyan mo at least 4 letters!"); return; }
+ if(n1!==n2){ document.getElementById('newPassError').classList.add('show'); setTimeout(()=>{document.getElementById('newPassError').classList.remove('show')},3000); return; }
+ localStorage.setItem('ALAALA_CUSTOM_PASS', n1);
+ alert("✅ BAGO NA PASSWORD MO BOSS: "+n1);
+ document.getElementById('passOverlay').classList.add('hidden');
+ closeVerify();
+ document.getElementById('newPass1').value=''; document.getElementById('newPass2').value='';
+ renderTOC();
+}
+function useOldPassword(){
+ document.getElementById('passOverlay').classList.add('hidden');
+ closeVerify();
+ document.getElementById('newPass1').value=''; document.getElementById('newPass2').value='';
+ renderTOC();
+}
+function toggleHideVideos(){
+ videosHidden =!videosHidden;
+ localStorage.setItem('HIDE_VIDEOS', videosHidden? '1' : '0');
+ updateHideBtn();
+ renderVideos();
+}
+function updateHideBtn(){
+ let btn=document.getElementById('hideVideoBtn');
+ if(!btn) return;
+ if(videosHidden){ btn.textContent='👁️ Show Videos'; btn.style.background='#c0392b'; }
+ else { btn.textContent='🙈 Hide Videos'; btn.style.background='#8B4513'; }
+}
+function openMenu(){ document.getElementById('menuDrawer').classList.add('active'); document.getElementById('menuOverlay').classList.add('active'); updateMenuCounts(); }
+function closeMenu(){ document.getElementById('menuDrawer').classList.remove('active'); document.getElementById('menuOverlay').classList.remove('active'); }
+function goMenu(tab){ closeMenu(); showTab(tab); }
+async function updateMenuCounts(){ let all=await loadAll(); let trash=await loadTrash(); document.getElementById('menuPhotos').textContent=all.filter(d=>d.type==='photo').length; document.getElementById('menuVideos').textContent=all.filter(d=>d.type==='video').length; document.getElementById('menuAudios').textContent=all.filter(d=>d.type==='audio').length; document.getElementById('menuSulat').textContent=all.filter(d=>d.type==='sulat').length; document.getElementById('menuDocs').textContent=all.filter(d=>d.type==='doc').length; document.getElementById('menuTrash').textContent=trash.length; }
+function showTab(t,evt){ document.querySelectorAll('[id^=tab-]').forEach(e=>e.style.display='none'); document.getElementById('tab-'+t).style.display='block'; document.querySelectorAll('.tabs button').forEach(b=>b.classList.remove('active')); if(evt&&evt.target) evt.target.classList.add('active'); if(t==='toc') renderTOC(); if(t==='photos') renderPhotos(); if(t==='videos'){ renderVideos(); updateHideBtn(); } if(t==='audios') renderAudios(); if(t==='sulat') renderSulat(); if(t==='docs') renderDocs(); if(t==='trash') renderTrash(); updateMenuCounts(); }
+function handleSearch(q){ renderCurrentTab(); }
+function renderCurrentTab(){ let a=document.querySelector('.tabs button.active'); if(!a){ renderTOC(); return; } let txt=a.textContent; if(txt.includes('Photos')) renderPhotos(); else if(txt.includes('Videos')) renderVideos(); else if(txt.includes('Audios')) renderAudios(); else if(txt.includes('Sulat')) renderSulat(); else if(txt.includes('Docs')) renderDocs(); else renderTOC(); }
+async function saveFile(input,type,albumId,caption){ const files=input.files; if(!files.length){alert('Pili ka muna boss!');return} for(let file of files){ if(file.size>1000*1024*1024){alert(file.name+' sobrang laki!'); continue;} let item={id:Date.now()+Math.random(),type:type,album:albumId.toString(),caption:caption||'Alaala',name:file.name,blob:file,data:null,date:new Date().toLocaleString(),size:file.size, extra:null}; await saveToDB(item); } input.value=''; alert('✅ Na-save na boss!'); renderCurrentTab(); renderTOC(); updateMenuCounts(); }
+function savePhoto(){ saveFile(document.getElementById('photoFile'),'photo',document.getElementById('photoAlbum').value,document.getElementById('photoCaption').value); }
+function saveVideo(){ saveFile(document.getElementById('videoFile'),'video',document.getElementById('videoAlbum').value,document.getElementById('videoCaption').value); }
+function saveAudio(){ saveFile(document.getElementById('audioFile'),'audio',document.getElementById('audioAlbum').value,document.getElementById('audioCaption').value); }
+function saveDoc(){ saveFile(document.getElementById('docFile'),'doc',document.getElementById('docAlbum').value,document.getElementById('docCaption').value); }
+async function saveSulat(){ let title=document.getElementById('sulatTitle').value; let content=document.getElementById('sulatContent').value; let chapter=document.getElementById('sulatChapter').value; if(!title||!content){alert('Lagyan mo title at content boss!');return} let item={id:Date.now(),type:'sulat',album:chapter.toString(),caption:title,name:title+'.txt',blob:null,data:content,date:new Date().toLocaleString(),size:content.length, extra:{title:title, content:content}}; await saveToDB(item); document.getElementById('sulatTitle').value=''; document.getElementById('sulatContent').value=''; alert('✅ Na-save na sulat boss!'); renderSulat(); renderTOC(); updateMenuCounts(); }
+function getFiltered(list){ let q=document.getElementById('searchInput').value.toLowerCase().trim(); if(!q) return list; return list.filter(it=> (it.caption&&it.caption.toLowerCase().includes(q)) || (it.name&&it.name.toLowerCase().includes(q)) ); }
+async function renderTOC(){ let all=await loadAll(); let photos=all.filter(d=>d.type==='photo').length; let videos=all.filter(d=>d.type==='video').length; let audios=all.filter(d=>d.type==='audio').length; let sulat=all.filter(d=>d.type==='sulat').length; let docs=all.filter(d=>d.type==='doc').length; let total=photos+videos+audios+sulat+docs; document.getElementById('tocPhotos').textContent=photos; document.getElementById('tocVideos').textContent=videos; document.getElementById('tocAudios').textContent=audios; document.getElementById('tocSulat').textContent=sulat; document.getElementById('tocDocs').textContent=docs; document.getElementById('tocTotal').textContent=total; updateMenuCounts(); }
+async function renderPhotos(){ let all=await loadAll(); all=getFiltered(all.filter(d=>d.type==='photo')); let cont=document.getElementById('photoContainer'); cont.innerHTML=''; for(let a=1;a<=12;a++){ let items=all.filter(d=>d.album==a); if(items.length===0 && document.getElementById('searchInput').value) continue; let title=document.createElement('div'); title.className='album-title'; title.innerHTML=`ALBUM ${a} <span class=count>${items.length}</span>`; cont.appendChild(title); let grid=document.createElement('div'); grid.className='grid'; if(items.length===0){grid.innerHTML='<div class=empty>Wala pang laman</div>'} else{items.forEach(it=>{let div=document.createElement('div'); div.className='item'; let url=getUrlFor(it); div.innerHTML=`<img src="${url}"><div class=info>${it.caption}</div>`; div.onclick=()=>openModal(it, items, false); grid.appendChild(div);})} cont.appendChild(grid); } }
+async function renderVideos(){ let all=await loadAll(); all=getFiltered(all.filter(d=>d.type==='video')); let cont=document.getElementById('videoContainer'); cont.innerHTML=''; if(videosHidden){ cont.innerHTML='<div class=empty style="padding:40px">🙈 Naka-HIDE ang videos boss! Click Show Videos para makita.<br><small>Privacy mode ON</small></div>'; return; } for(let a=1;a<=12;a++){ let items=all.filter(d=>d.album==a); if(items.length===0 && document.getElementById('searchInput').value) continue; let title=document.createElement('div'); title.className='album-title'; title.innerHTML=`ALBUM ${a} <span class=count>${items.length}</span>`; cont.appendChild(title); let grid=document.createElement('div'); grid.className='grid'; if(items.length===0){grid.innerHTML='<div class=empty>Wala pang laman</div>'} else{items.forEach(it=>{let div=document.createElement('div'); div.className='item'; let url=getUrlFor(it); div.innerHTML=`<video src="${url}" muted></video><div class=info>🎬 ${it.caption}</div>`; div.onclick=()=>openModal(it, items, false); grid.appendChild(div);})} cont.appendChild(grid); } }
+async function renderAudios(){ let all=await loadAll(); all=getFiltered(all.filter(d=>d.type==='audio')); let cont=document.getElementById('audioContainer'); cont.innerHTML=''; for(let a=1;a<=5;a++){ let items=all.filter(d=>d.album==a); let title=document.createElement('div'); title.className='album-title'; title.innerHTML=`ALBUM ${a} <span class=count>${items.length}</span>`; cont.appendChild(title); let grid=document.createElement('div'); grid.className='grid'; if(items.length===0){grid.innerHTML='<div class=empty>Wala pang laman</div>'} else{items.forEach(it=>{let div=document.createElement('div'); div.className='doc-item'; div.innerHTML=`<span>🎵</span><small>${it.caption}</small>`; div.onclick=()=>openModal(it, items, false); grid.appendChild(div);})} cont.appendChild(grid); } }
+async function renderSulat(){ let all=await loadAll(); all=getFiltered(all.filter(d=>d.type==='sulat')); let cont=document.getElementById('sulatContainer'); cont.innerHTML=''; for(let a=1;a<=8;a++){ let items=all.filter(d=>d.album==a); let title=document.createElement('div'); title.className='album-title'; title.innerHTML=`Chapter ${a} <span class=count>${items.length}</span>`; cont.appendChild(title); if(items.length===0){let e=document.createElement('div'); e.className='empty'; e.textContent='Wala pang pages'; cont.appendChild(e);} else{items.forEach(it=>{let div=document.createElement('div'); div.className='sulat-item'; div.style.cssText='background:#fff;border-left:5px solid #8B4513;padding:12px;margin:6px 0;border-radius:10px;display:flex;justify-content:space-between'; div.innerHTML=`<div style="flex:1"><h4>📝 ${it.extra.title}</h4><p style="font-size:11px;color:#666">${it.data.substring(0,60)}...</p></div><div>⋮</div>`; div.onclick=()=>openModal(it, items, false); cont.appendChild(div);})} } }
+async function renderDocs(){ let all=await loadAll(); all=getFiltered(all.filter(d=>d.type==='doc')); let cont=document.getElementById('docContainer'); cont.innerHTML=''; for(let a=1;a<=12;a++){ let items=all.filter(d=>d.album==a); let title=document.createElement('div'); title.className='album-title'; title.innerHTML=`ALBUM ${a} <span class=count>${items.length}</span>`; cont.appendChild(title); let grid=document.createElement('div'); grid.className='grid'; if(items.length===0){grid.innerHTML='<div class=empty>Wala pang laman</div>'} else{items.forEach(it=>{let div=document.createElement('div'); let url=getUrlFor(it); let isImg=(it.blob&&it.blob.type.startsWith('image/')); div.className=isImg?'item':'doc-item'; div.innerHTML=isImg?`<img src="${url}"><div class=info>${it.caption}</div>`:`<span>📄</span><small>${it.caption}</small>`; div.onclick=()=>openModal(it, items, false); grid.appendChild(div);})} cont.appendChild(grid); } }
+async function renderTrash(){ let trash=await loadTrash(); let cont=document.getElementById('trashContainer'); if(!cont) return; cont.innerHTML=''; if(trash.length===0){cont.innerHTML='<div class=empty>🗑️ Walang laman Trash!</div>'; return;} trash.forEach(it=>{ let div=document.createElement('div'); div.style.cssText='background:#fff;border:2px solid #c0392b;border-radius:12px;padding:12px;margin-bottom:8px;display:flex;gap:10px;align-items:center'; let url=getUrlFor(it,true); let thumb=`<div style="width:60px;height:60px;background:#000;border-radius:8px;overflow:hidden;flex-shrink:0">${it.type==='photo'? `<img src="${url}" style="width:100%;height:100%;object-fit:cover">` : it.type==='video'? `<video src="${url}" muted style="width:100%;height:100%;object-fit:cover"></video>` : `📄`}</div>`; div.innerHTML=thumb+`<div style="flex:1"><h4>${it.caption}</h4><small>${it.name}</small></div><div><button onclick="restoreOne(${it.id})" style="padding:6px;background:#27ae60;color:#fff;border:none;border-radius:6px">♻️</button> <button onclick="permaDeleteOne(${it.id})" style="padding:6px;background:#000;color:#fff;border:none;border-radius:6px">❌</button></div>`; cont.appendChild(div); }); }
+function openModal(it, list, isTrash){ currentItem=it; currentList=list||[it]; currentIndex=currentList.findIndex(x=>x.id===it.id); if(currentIndex<0) currentIndex=0; isTrashView=isTrash||false; document.getElementById('modalBtns').style.display=isTrashView?'none':'flex'; document.getElementById('modalTrashBtns').style.display=isTrashView?'flex':'none'; showModalItem(it); document.getElementById('modal').classList.add('active'); }
+function showModalItem(it){ document.getElementById('modalImg').style.display='none'; document.getElementById('modalVideo').style.display='none'; document.getElementById('modalAudio').style.display='none'; document.getElementById('modalSulat').style.display='none'; let url=getUrlFor(it, isTrashView); if(it.type==='photo'){let el=document.getElementById('modalImg'); el.src=url; el.style.display='block';} if(it.type==='video'){let el=document.getElementById('modalVideo'); el.src=url; el.style.display='block';} if(it.type==='audio'){let el=document.getElementById('modalAudio'); el.src=url; el.style.display='block';} if(it.type==='sulat'){let el=document.getElementById('modalSulat'); el.innerHTML=`<h3>${it.extra.title}</h3><div style="margin-top:10px;white-space:pre-wrap">${it.extra.content}</div>`; el.style.display='block';} if(it.type==='doc'){ if(it.blob&&it.blob.type.startsWith('image/')){let el=document.getElementById('modalImg'); el.src=url; el.style.display='block';} else if(it.blob&&it.blob.type.startsWith('video/')){let el=document.getElementById('modalVideo'); el.src=url; el.style.display='block';} else if(it.blob&&it.blob.type.startsWith('audio/')){let el=document.getElementById('modalAudio'); el.src=url; el.style.display='block';} else{let el=document.getElementById('modalSulat'); el.innerHTML=`<h3>${it.caption}</h3>`; el.style.display='block';} } document.getElementById('modalCap').textContent=`${it.caption} - ${it.name}`; }
+function navigateModal(dir){ if(!currentList.length) return; currentIndex=(currentIndex+dir+currentList.length)%currentList.length; currentItem=currentList[currentIndex]; showModalItem(currentItem); }
+function closeModal(){document.getElementById('modal').classList.remove('active'); document.getElementById('modalVideo').pause(); document.getElementById('modalAudio').pause();}
+function downloadCurrent(){ if(!currentItem)return; if(currentItem.type==='sulat'){ let blob=new Blob([currentItem.caption+"\n\n"+currentItem.data],{type:'text/plain'}); let url=URL.createObjectURL(blob); let a=document.createElement('a'); a.href=url; a.download=currentItem.name; a.click(); return;} let url=getUrlFor(currentItem, isTrashView); let a=document.createElement('a'); a.href=url; a.download=currentItem.name; a.click(); }
+async function moveToTrash(){ if(!currentItem) return; if(!confirm('Ilipat sa Trash?')) return; let item={...currentItem, deletedAt:Date.now()}; await saveToTrash(item); await deleteFromDB(currentItem.id); closeModal(); renderTOC(); renderTrash(); renderCurrentTab(); }
+async function restoreCurrent(){ if(!currentItem) return; await saveToDB({id:currentItem.id,type:currentItem.type,album:currentItem.album,caption:currentItem.caption,name:currentItem.name,blob:currentItem.blob,data:currentItem.data,date:currentItem.date,size:currentItem.size,extra:currentItem.extra}); await deleteFromTrash(currentItem.id); closeModal(); renderTrash(); renderTOC(); renderCurrentTab(); }
+async function permaDeleteCurrent(){ if(!currentItem) return; if(!confirm('Permanent delete?')) return; await deleteFromTrash(currentItem.id); closeModal(); renderTrash(); renderTOC(); }
+async function restoreOne(id){ let trash=await loadTrash(); let item=trash.find(x=>x.id===id); if(!item) return; await saveToDB({id:item.id,type:item.type,album:item.album,caption:item.caption,name:item.name,blob:item.blob,data:item.data,date:item.date,size:item.size,extra:item.extra}); await deleteFromTrash(id); renderTrash(); renderTOC(); }
+async function permaDeleteOne(id){ if(!confirm('Permanent delete?')) return; await deleteFromTrash(id); renderTrash(); renderTOC(); }
+async function restoreAll(){ let trash=await loadTrash(); if(!trash.length){alert('Walang laman Trash!');return} if(!confirm('Restore lahat?')) return; for(let item of trash){ await saveToDB({id:item.id,type:item.type,album:item.album,caption:item.caption,name:item.name,blob:item.blob,data:item.data,date:item.date,size:item.size,extra:item.extra}); await deleteFromTrash(item.id); } renderTrash(); renderTOC(); }
+async function emptyTrash(){ let trash=await loadTrash(); if(!trash.length){alert('Walang laman Trash!');return} if(!confirm('Empty Trash?')) return; for(let item of trash){ await deleteFromTrash(item.id); } renderTrash(); renderTOC(); }
+function logout(){ document.getElementById('passOverlay').classList.remove('hidden'); document.getElementById('passInput').value=''; closeVerify(); }
+</script>
+</body>
+</html>
