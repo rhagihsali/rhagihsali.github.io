@@ -1,125 +1,77 @@
 <!DOCTYPE html>
-<html lang="tl">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Alaala Cabinet - Private</title>
-<link rel="manifest" href="manifest.json">
-<meta name="theme-color" content="#8B4513">
+<html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Alaala Cabinet - Book</title>
 <style>
-*{margin:0;padding:0;box-sizing:border-box}
-body{font-family:system-ui;background:#f5e6d3}
-.login{height:100vh;display:flex;align-items:center;justify-content:center;padding:20px}
-.login-box{background:white;padding:30px;border-radius:20px;box-shadow:0 10px 30px rgba(0,0,0,0.2);width:100%;max-width:350px;text-align:center}
-.login-box h1{color:#8B4513;margin-bottom:10px}
-.login-box input{width:100%;padding:12px;margin:15px 0;border:2px solid #D2691E;border-radius:10px;font-size:16px;text-align:center}
-.login-box button{width:100%;padding:12px;background:#8B4513;color:white;border:none;border-radius:10px;font-weight:bold;font-size:16px}
-.main{display:none;padding:10px;padding-bottom:80px}
-.header{background:linear-gradient(135deg,#8B4513,#D2691E);color:white;padding:20px;border-radius:15px;text-align:center;margin-bottom:15px}
-.toc{background:white;padding:15px;border-radius:10px;margin-bottom:15px}
-.toc h3{color:#8B4513;margin-bottom:10px}
-.toc-list{list-style:none;max-height:220px;overflow-y:auto}
-.toc-list li{padding:8px;border-bottom:1px solid #eee;display:flex;justify-content:space-between;cursor:pointer;font-size:13px}
-.toc-list li:hover{background:#f5e6d3}
-.cabinet{background:#8B4513;padding:12px;border-radius:15px}
-.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
-.slot{background:#f5e6d3;border-radius:8px;aspect-ratio:1;display:flex;align-items:center;justify-content:center;position:relative;cursor:pointer}
-.slot.filled{background-size:cover;background-position:center}
-.slot.num{position:absolute;top:3px;left:5px;background:#8B4513;color:white;font-size:9px;padding:2px 5px;border-radius:8px}
-.install{background:#25D366;color:white;padding:10px;border-radius:10px;text-align:center;margin-bottom:10px}
-.install button{background:white;color:#25D366;border:none;padding:6px 15px;border-radius:15px;font-weight:bold}
-</style>
-</head>
-<body>
-<div class="login" id="login">
-<div class="login-box">
-<h1>🗄️ Alaala Cabinet</h1>
-<p>Private ng Pamilya - Culion</p>
-<input type="password" id="pw" placeholder="Ilagay Password">
-<button onclick="login()">Buksan ang Cabinet</button>
-<p style="font-size:11px;margin-top:10px;color:#888">Default: pamilya123<br>Pwede palitan sa code</p>
+*{box-sizing:border-box}body{margin:0;background:#1a0f08;color:#ffd700;font-family:Georgia,serif}
+#lock{position:fixed;top:0;left:0;width:100%;height:100%;background:#1a0f08;display:flex;justify-content:center;align-items:center;z-index:9999}
+.box{background:#4a2c17;padding:30px;border-radius:15px;border:3px solid gold;width:85%;max-width:320px;text-align:center}
+input{width:90%;padding:12px;margin:15px 0;border-radius:8px;border:none;text-align:center;font-size:16px}
+button{background:gold;color:#2c1810;padding:12px 25px;border:none;border-radius:8px;font-weight:bold}
+.header{text-align:center;padding:20px;background:#2c1810;border-bottom:3px solid gold}
+.toc{background:#3d2314;margin:15px;border-radius:15px;padding:20px;border:2px solid gold}
+.toc-item{background:#2c1810;margin:10px 0;padding:15px;border-radius:10px;display:flex;justify-content:space-between;align-items:center;border-left:5px solid gold}
+.toc-item:active{background:#4a2c17}
+.section{display:none;padding:15px}
+.section.active{display:block}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.card{background:#2c1810;border-radius:10px;overflow:hidden;border:2px solid #5a3a1f;text-align:center;padding-bottom:8px}
+.card img{width:100%;height:140px;object-fit:cover}
+.btn{margin:4px;background:#333;color:gold;border:1px solid gold;padding:6px 10px;border-radius:6px;font-size:12px}
+.book-page{background:#fdf6e3;color:#2c1810;margin:15px;border-radius:10px;padding:20px;min-height:300px;box-shadow:0 5px 15px rgba(0,0,0,0.5);position:relative}
+.page-num{position:absolute;bottom:10px;right:20px;font-size:12px;color:#888}
+.nav-book{display:flex;justify-content:space-between;margin:10px 15px}
+</style></head><body>
+
+<div id="lock"><div class="box"><h2>🗄️ ALAALA CABINET</h2><p>Password ng Pamilya</p><input type="password" id="pass" placeholder="Ilagay password"><br><button onclick="check()">BUKSAN ANG LIBRO</button><p id="msg" style="color:#ff7777"></p></div></div>
+
+<div class="header"><h1 style="margin:5px">📖 ALAALA NG BAYAN NG CULION 📖</h1><p style="margin:0;font-style:italic">A Family Archive Book</p></div>
+
+<div id="home">
+<div class="toc"><h2 style="margin-top:0">📑 TABLE OF CONTENTS</h2>
+<div class="toc-item" onclick="openSec('photos')"><span>📸 I. Mga Larawan (Photos)</span><span>110 ></span></div>
+<div class="toc-item" onclick="openSec('videos')"><span>🎬 II. Mga Video (Videos)</span><span> > </span></div>
+<div class="toc-item" onclick="openSec('audios')"><span>🎵 III. Mga Audio (Audios)</span><span> > </span></div>
+<div class="toc-item" onclick="openSec('sulat')"><span>📜 IV. Mga Sulat (Diary & Poems)</span><span> > </span></div>
 </div>
 </div>
 
-<div class="main" id="main">
-<div class="install">📱 Gawing APP! <button onclick="installApp()">I-INSTALL</button><br><span style="font-size:10px">Pindutin ⋮ > Add to Home Screen kung wala button</span></div>
+<div id="photos" class="section"><button onclick="goHome()" class="btn">⬅ Back to Contents</button><h2>📸 Mga Larawan</h2><p style="font-size:13px">Pindutin para palakihin. Pwede i-download sa ibang phone.</p><div class="grid" id="photoGrid"></div></div>
 
-<div class="header">
-<h1>🗄️ ALAALA CABINET</h1>
-<p>110 Alaala ng Pamilya - May Password</p>
+<div id="videos" class="section"><button onclick="goHome()" class="btn">⬅ Back to Contents</button><h2>🎬 Mga Video</h2><div id="videoGrid"></div></div>
+
+<div id="audios" class="section"><button onclick="goHome()" class="btn">⬅ Back to Contents</button><h2>🎵 Mga Audio</h2><div id="audioGrid"></div></div>
+
+<div id="sulat" class="section"><button onclick="goHome()" class="btn">⬅ Back to Contents</button><h2>📜 Mga Sulat</h2>
+<div class="book-page" id="bookPage"><h3 id="chapterTitle">Kabanata 1</h3><p id="pageText" style="line-height:1.8;white-space:pre-line"></p><div class="page-num" id="pageNum">Page 1 / 3</div></div>
+<div class="nav-book"><button onclick="prevPage()">⬅ Nakaraan</button><button onclick="nextPage()">Susunod ➡</button></div>
 </div>
-
-<div class="toc">
-<h3>📖 Table of Contents</h3>
-<ul class="toc-list" id="toc"></ul>
-</div>
-
-<div class="cabinet"><div class="grid" id="grid"></div></div>
-</div>
-
-<input type="file" id="fileInput" accept="image/*" style="display:none">
 
 <script>
-const PASSWORD="pamilya123"; // <-- PALITAN MO PASSWORD DITO BOSS
-function login(){
-  if(document.getElementById('pw').value===PASSWORD){
-    document.getElementById('login').style.display='none';
-    document.getElementById('main').style.display='block';
-    localStorage.setItem('cabinet_login','yes');
-  } else { alert('Mali password boss!'); }
-}
-if(localStorage.getItem('cabinet_login')==='yes'){
-  document.getElementById('login').style.display='none';
-  document.getElementById('main').style.display='block';
-}
-const grid=document.getElementById('grid');
-const toc=document.getElementById('toc');
-for(let i=1;i<=110;i++){
-  let title="Alaala #"+i+" - Bakante pa";
-  if(i==1) title="Bahay sa Culion";
-  if(i==2) title="Si Lola at Lolo";
-  if(i==3) title="Mama at Papa";
-  const li=document.createElement('li');
-  li.innerHTML=`<span>${i}. ${title}</span><span>${localStorage.getItem('cabinet_'+i)?'✅':'⭕'}</span>`;
-  li.onclick=()=>document.getElementById('grid').children[i-1].click();
-  toc.appendChild(li);
-  const div=document.createElement('div');
-  div.className='slot';
-  div.innerHTML=`<span class="num">${i}</span><span style="font-size:22px">+</span>`;
-  div.onclick=()=>openSlot(i,div);
-  grid.appendChild(div);
-}
-let curDiv=null;
-function openSlot(num,div){
-  curDiv=div; curDiv.dataset.num=num;
-  document.getElementById('fileInput').click();
-}
-document.getElementById('fileInput').onchange=function(e){
-  const file=e.target.files[0]; if(!file) return;
-  const r=new FileReader();
-  r.onload=function(ev){
-    curDiv.style.backgroundImage=`url('${ev.target.result}')`;
-    curDiv.classList.add('filled');
-    curDiv.innerHTML=`<span class="num">${curDiv.dataset.num}</span>`;
-    localStorage.setItem('cabinet_'+curDiv.dataset.num, ev.target.result);
-    location.reload();
-  }; r.readAsDataURL(file);
-}
-for(let i=1;i<=110;i++){
-  const d=localStorage.getItem('cabinet_'+i);
-  if(d){
-    const div=grid.children[i-1];
-    div.style.backgroundImage=`url('${d}')`;
-    div.classList.add('filled');
-    div.innerHTML=`<span class="num">${i}</span>`;
-  }
-}
-let deferredPrompt;
-window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferredPrompt=e;});
-function installApp(){
-  if(deferredPrompt) deferredPrompt.prompt();
-  else alert('Sa Chrome: Pindutin ⋮ > Add to Home Screen > Install');
-}
-</script>
-</body>
-</html>
+function check(){ if(document.getElementById('pass').value==='Rhagih@200202'){document.getElementById('lock').style.display='none'} else {document.getElementById('msg').innerText='Mali password boss!'} }
+function openSec(id){ document.getElementById('home').style.display='none'; document.querySelectorAll('.section').forEach(s=>s.classList.remove('active')); document.getElementById(id).classList.add('active'); window.scrollTo(0,0) }
+function goHome(){ document.querySelectorAll('.section').forEach(s=>s.classList.remove('active')); document.getElementById('home').style.display='block' }
+
+// PHOTOS - 110
+let pGrid=document.getElementById('photoGrid');
+for(let i=1;i<=20;i++){ pGrid.innerHTML+=`<div class="card"><img src="https://picsum.photos/400/400?random=${i}" onclick="window.open(this.src)"><div style="padding:5px;font-size:12px">Alaala ${i}</div><a href="https://picsum.photos/400/400?random=${i}" download><button class="btn">⬇ Download</button></a> <button class="btn" onclick="window.open('https://picsum.photos/400/400?random=${i}')">👁 View</button></div>` }
+
+// VIDEOS - sample
+let vGrid=document.getElementById('videoGrid');
+vGrid.innerHTML=`<div class="card" style="padding:10px"><video width="100%" controls style="border-radius:8px"><source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4"></video><p>Sample Video 1 - Palitan mo ng video mo</p><a href="https://www.w3schools.com/html/mov_bbb.mp4" download><button class="btn">⬇ Download Video</button></a></div>`;
+
+// AUDIOS - sample
+let aGrid=document.getElementById('audioGrid');
+aGrid.innerHTML=`<div class="card" style="padding:15px"><p>🎵 Sample Audio - Kwento ni Lola</p><audio controls style="width:100%"><source src="https://www.w3schools.com/html/horse.mp3"></audio><br><a href="https://www.w3schools.com/html/horse.mp3" download><button class="btn">⬇ Download Audio</button></a></div>`;
+
+// SULAT - parang diary pages
+const chapters=[
+{title:"Kabanata 1: Ang Simula", text:"Noong unang panahon sa Bayan ng Culion...\n\nDito nagsimula ang lahat ng aming mga alaala. Ang pamilya na matatag, puno ng pagmamahal at pananampalataya.\n\nIsinulat noong 1960."},
+{title:"Kabanata 2: Mga Pangarap", text:"Ang bawat larawan ay may kwento.\nAng bawat ngiti ay may dahilan.\n\n'Ang pamilya ay hindi lamang dugo, kundi pagmamahal na walang hanggan.'\n\n- Lola"},
+{title:"Kabanata 3: Para sa Susunod na Henerasyon", text:"Sana itong Alaala Cabinet na ito ay magsilbing gabay...\n\nNaalala ninyo pa ba ang mga awitin natin tuwing gabi?\nAng mga kwento sa ilalim ng buwan?\n\nIto ay para sa inyo, mga anak at apo.\n\nMahal namin kayo."}
+];
+let currentPage=0;
+function showPage(){ document.getElementById('chapterTitle').innerText=chapters[currentPage].title; document.getElementById('pageText').innerText=chapters[currentPage].text; document.getElementById('pageNum').innerText=`Page ${currentPage+1} / ${chapters.length}` }
+function nextPage(){ if(currentPage<chapters.length-1){currentPage++;showPage()} }
+function prevPage(){ if(currentPage>0){currentPage--;showPage()} }
+showPage();
+</script></body></html>
