@@ -1,0 +1,15 @@
+{
+  "name": "Alaala Cabinet Private",
+  "short_name": "Alaala",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#f5e6d3",
+  "theme_color": "#8B4513",
+  "icons": [
+    {
+      "src": "https://cdn-icons-png.flaticon.com/512/2232/2232688.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
